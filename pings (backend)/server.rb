@@ -8,7 +8,7 @@ require './linked_list'
 set :bind, 'localhost'
 set :port, 3000
 
-$devices = Hash.new #TODO: persistent storage
+$devices = Hash.new #TODO: persistent storage/DB
 
 post '/clear_data' do
     $devices = Hash.new
