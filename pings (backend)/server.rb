@@ -26,6 +26,9 @@ get '/devices' do
 end
 
 get '/:device_id/:date' do |id, date|
+    unless (id == 'all' || $devices.keys.include?(id)) && is_time(date)
+        return Array.new.to_json
+    end
     unless id == 'all'
         return get_device_time(id, date).to_json
     end
@@ -37,6 +40,9 @@ get '/:device_id/:date' do |id, date|
 end
 
 get '/:device_id/:from_date/:to_date' do |id, from, to|
+    unless (id == 'all' || $devices.keys.include?(id)) && is_time(from) && is_time(to)
+        return Array.new.to_json
+    end
     unless id == 'all'
         return get_device_times(id, from, to).to_json
     end
@@ -45,6 +51,13 @@ get '/:device_id/:from_date/:to_date' do |id, from, to|
         all[id] = get_device_times(id, from, to)
     end
     Hash[all.sort_by {|key, val| key }].to_json
+end
+
+# dirty code to check if a int (seconds since UNIX epoch) or valid date given
+def is_time(time)
+    return Integer(time) rescue
+    return Date.iso8601(time) rescue
+    false
 end
 
 #only one date given
