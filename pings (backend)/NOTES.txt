@@ -1,0 +1,18 @@
+Submission by: Paul Haley
+
+Why Ruby?
+Said to try a new language. Looking through the `ping.rb` file, Ruby looked pretty nice. Never having used Ruby, started doing a little reading and experimentation. Can easily say it is one of the most satisfying languages I have used for a while. I am aware this is likely a long way from idiomatic Ruby, would be keen to learn more.  
+
+Assumptions:
+It is assumed that the log times POSTed are strictly non-descending.
+    I realise that this is a poor assumption.
+
+Data structure:
+Hash table used to store LinkedList for each device (device id is key).
+    Expected constant time lookup to find the LinkedList
+LinkedList is used as an unconstrained number of logs can be made. Finding the time/date range requested is O(n) as a result.
+
+If the data was to be stored persistently, SQLite would be best if there are no serious concurrent access going on. I did not implement this due to time limitations (university).
+
+Disclaimer:
+I am a full time (over time) student doing 4 courses in addition to finishing thesis. I am also tutoring 2 courses. Things have been a little busy over the past week.
