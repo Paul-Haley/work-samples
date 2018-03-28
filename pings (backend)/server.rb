@@ -26,17 +26,25 @@ get '/devices' do
 end
 
 get '/:device_id/:date' do |id, date|
-    if id == 'all'
-        puts 'implement all version'
+    unless id == 'all'
+        return get_device_time(id, date).to_json
     end
-    get_device_time(id, date).to_json
+    all = Hash.new
+    $devices.keys.each do |id|
+        all[id] = get_device_time(id, date)
+    end
+    Hash[all.sort_by {|key, val| key }].to_json
 end
 
 get '/:device_id/:from_date/:to_date' do |id, from, to|
-    if id == 'all'
-        puts 'implement all version'
+    unless id == 'all'
+        return get_device_times(id, from, to).to_json
     end
-    get_device_times(id, from, to).to_json
+    all = Hash.new
+    $devices.keys.each do |id|
+        all[id] = get_device_times(id, from, to)
+    end
+    Hash[all.sort_by {|key, val| key }].to_json
 end
 
 #only one date given
