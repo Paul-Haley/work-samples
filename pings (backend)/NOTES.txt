@@ -12,7 +12,5 @@ Hash table used to store LinkedList for each device (device id is key).
     Expected constant time lookup to find the LinkedList
 LinkedList is used as an unconstrained number of logs can be made. Finding the time/date range requested is O(n) as a result.
 
-If the data was to be stored persistently, SQLite would be best if there are no serious concurrent access going on. I did not implement this due to time limitations (university).
+If the data was to be stored persistently, SQLite via Ruby dbi would be a reasonable choice if there was no serious concurrent access going on. I did not implement this due to time limitations (university).
 
-Disclaimer:
-I am a full time (over time) student doing 4 courses in addition to finishing thesis. I am also tutoring 2 courses. Things have been a little busy over the past week.
