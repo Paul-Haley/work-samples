@@ -29,14 +29,31 @@ get '/:device_id/:date' do |id, date|
     if id == 'all'
         puts 'implement all version'
     end
-    node = find_start(id, date)
+    get_device_time(id, date).to_json
+end
+
+get '/:device_id/:from_date/:to_date' do |id, from, to|
+    if id == 'all'
+        puts 'implement all version'
+    end
+    get_device_times(id, from, to).to_json
+end
+
+#only one date given
+def get_device_time(id, from)
+    return get_device_times(id, from, (Date.iso8601(from) + 1).strftime("%s"))
+end
+
+# when two times/dates are given
+def get_device_times(id, from, to)
+    node = find_start(id, from)
     list = Array.new
-    while node && node.value < Integer((Date.iso8601(date) + 1).strftime("%s")) do
+    while node && node.value < to_epoch(to) do
         list.push(node.value)
         break unless node.next
         node = node.next
     end
-    list.to_json
+    return list
 end
 
 #given a time or date string, convert to a Integer representing the UNIX time
@@ -49,25 +66,9 @@ end
 def find_start(id, from)
     from= to_epoch(from)
     node = $devices[id].head
-    puts "Value = " + from.to_s
     while node.next do
-        puts node.value.to_s
         return node if node.value >= from
         node = node.next
     end
     return nil #from time not in list
-end
-
-# returns array of times in range given
-# from and to of string representing ISO8601 date format or seconds since UNIX epoch
-def get_range(id, from, to) #FIXME: check what this method is actually for
-    from = to_epoch(from)
-    to = to_epoch(to)
-    to -= 1 #NOTE: to handle exclusive nature of 'to', take a second
-    find_start(id, from)
-end
-
-def get_range(id, date)
-    d = Date.iso8601(date)
-    get_range(id, d.strftime("%s"), (d+1).strftime("%s"))
 end
